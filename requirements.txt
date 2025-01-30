@@ -1,0 +1,8 @@
+aiohttp==3.9.0
+hstspreload==2024.3.1 
+httpcore==0.9.1 
+httpx==0.13.3 
+Hypercorn==0.17.3
+hyperframe==5.2.0
+requests==2.31.0
+python-dateutil==2.9.0.post0
