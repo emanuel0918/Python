@@ -6,22 +6,22 @@ from aiohttp import web
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
-VERIFY_TOKEN = os.environ.get('VERIFY_TOKEN', 'CHANGE_THIS')
-
 routes = web.RouteTableDef()
 
-@routes.get('/income')
+VERIFY_TOKEN = os.getenv('VERIFY_TOKEN', 'defaultVerifyToken')
+
+@routes.get("/income")
 async def verify_webhook(request):
-    # Verification challenge
-    mode = request.query.get('hub.mode')
-    token = request.query.get('hub.verify_token')
-    challenge = request.query.get('hub.challenge')
-    
-    if mode == 'subscribe' and token == VERIFY_TOKEN:
-        logger.info("WEBHOOK_VERIFIED")
-        return web.Response(text=challenge)  # Return hub.challenge
+    mode = request.query.get("hub.mode")
+    token = request.query.get("hub.verify_token")
+    challenge = request.query.get("hub.challenge")
+
+    if mode == "subscribe" and token == VERIFY_TOKEN:
+        # If it matches, respond with hub.challenge
+        return web.Response(text=challenge)
     else:
         return web.json_response({"error": "Verification failed"}, status=403)
+
 
 @routes.post('/income')
 async def receive_webhook(request):
